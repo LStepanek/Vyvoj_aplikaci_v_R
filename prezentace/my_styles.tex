@@ -1,0 +1,157 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% téma prezentace -------------------------------------------------------------
+\usetheme{Frankfurt}
+
+% článková matematická notace -------------------------------------------------
+\usefonttheme[onlymath]{serif}
+
+% loaduju některé balíčky -----------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, czech]{babel}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amsfonts}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{blindtext}
+\usepackage{scrextend}
+\usepackage{remreset}
+\usepackage{hyperref}
+\usepackage{listings}
+
+
+% české uvozovky --------------------------------------------------------------
+\DeclareQuoteAlias{german}{czech}
+\MakeOuterQuote{"}
+
+% změna velikosti fontu -------------------------------------------------------
+\newcommand\reduceFontSize{\fontsize{8}{10}\selectfont}
+
+% definuji rozdílný footer na titulní straně a dalších slidech ----------------
+\defbeamertemplate*{footline}{my footline}
+{
+    \ifnum \insertpagenumber=1
+        \leavevmode%
+        \hbox{%
+            \pgfsetfillopacity{1}\begin{beamercolorbox}[wd=.23\paperwidth,
+              ht=2.25ex,dp=1ex,center]{author in head/foot}%
+              \usebeamerfont{author in head/foot}\pgfsetfillopacity{1}
+            \end{beamercolorbox}%
+            \pgfsetfillopacity{1}\begin{beamercolorbox}[wd=.50\paperwidth,
+              ht=2.25ex,dp=1ex,center]{title in head/foot}%
+              \usebeamerfont{title in head/foot}\pgfsetfillopacity{1}
+            \end{beamercolorbox}%
+            \pgfsetfillopacity{1}\begin{beamercolorbox}[wd=.27\paperwidth,
+              ht=2.25ex,dp=1ex,right]{date in head/foot}%
+              \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+            \end{beamercolorbox}
+          }%
+        \vskip0pt%
+    \else
+        \leavevmode%
+        \hbox{%
+            \pgfsetfillopacity{1}\begin{beamercolorbox}[wd=.23\paperwidth,
+              ht=2.25ex,dp=1ex,center]{author in head/foot}%
+              \usebeamerfont{author in head/foot}\pgfsetfillopacity{1}%
+                \insertshortauthor
+            \end{beamercolorbox}%
+            \pgfsetfillopacity{1}\begin{beamercolorbox}[wd=.50\paperwidth,
+              ht=2.25ex,dp=1ex,center]{title in head/foot}%
+              \usebeamerfont{title in head/foot}\pgfsetfillopacity{1}%
+                \insertshorttitle
+            \end{beamercolorbox}%
+            \pgfsetfillopacity{1}\begin{beamercolorbox}[wd=.16\paperwidth,
+              ht=2.25ex,dp=1ex,center]{date in head/foot}%
+              \usebeamerfont{date in head/foot}\pgfsetfillopacity{1}%
+                \insertshortdate{}
+            \end{beamercolorbox}%
+            \pgfsetfillopacity{1}\begin{beamercolorbox}[wd=.11\paperwidth,
+              ht=2.25ex,dp=1ex,right]{date in head/foot}%  
+              \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+            \end{beamercolorbox}
+          }%
+        \vskip0pt%
+    \fi
+}
+
+\setbeamertemplate{footline}[my footline]
+
+
+% počítadlo stránek v headeru -------------------------------------------------
+\makeatletter
+    \@removefromreset{subsection}{section}
+\makeatother
+\setcounter{subsection}{1}
+
+% nastavuji highlighting chunků kódu na jazyk R a další detaily ---------------
+%\captionsetup[lstlisting]{position = bottom}
+\definecolor{my_gray}{rgb}{0.4,0.4,0.4}
+\renewcommand{\lstlistingname}{Kód}  %% předefinovávám název chunků
+\lstdefinestyle{custom_R}{
+  basicstyle = \ttfamily\scriptsize,
+  belowcaptionskip = 1\baselineskip,
+  breaklines = true,
+  frame = L,
+  xleftmargin = \parindent,
+  language = R,
+  showstringspaces = false,
+  keywordstyle = \bfseries\color{green!40!black},
+  commentstyle = \itshape\color{purple!40!black},
+  identifierstyle = \color{blue},
+  stringstyle = \color{orange},
+  numbers = left,
+  numbersep = 12pt,
+  numberstyle = \small\color{my_gray},
+  texcl = true,
+  alsoother = {\#},
+  inputencoding = utf8,
+  extendedchars = true,
+  literate = %
+  {á}{{\'a}}1
+  {č}{{\v{c}}}1
+  {ď}{{\v{d}}}1
+  {é}{{\'e}}1
+  {ě}{{\v{e}}}1
+  {í}{{\'i}}1
+  {ň}{{\v{n}}}1
+  {ó}{{\'o}}1
+  {ř}{{\v{r}}}1
+  {š}{{\v{s}}}1
+  {ť}{{\v{t}}}1
+  {ú}{{\'u}}1
+  {ů}{{\r{u}}}1
+  {ý}{{\'y}}1
+  {ž}{{\v{z}}}1
+  {Á}{{\'A}}1
+  {Č}{{\v{C}}}1
+  {Ď}{{\v{D}}}1
+  {É}{{\'E}}1
+  {Ě}{{\v{E}}}1
+  {Í}{{\'I}}1
+  {Ň}{{\v{N}}}1
+  {Ó}{{\'O}}1
+  {Ř}{{\v{R}}}1
+  {Š}{{\v{S}}}1
+  {Ť}{{\v{T}}}1
+  {Ú}{{\'U}}1
+  {Ů}{{\r{U}}}1
+  {Ý}{{\'Y}}1
+  {Ž}{{\v{Z}}}1
+}
+\lstset{escapechar = @, style = custom_R}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+

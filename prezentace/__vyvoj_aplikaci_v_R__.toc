@@ -1,0 +1,9 @@
+\select@language {czech}
+\beamer@sectionintoc {1}{Rozjezd}{2}{0}{1}
+\beamer@sectionintoc {2}{Prvn\IeC {\'\i } aplikace}{6}{0}{2}
+\beamer@sectionintoc {3}{Gramatika aplikace}{11}{0}{3}
+\beamer@sectionintoc {4}{Slovn\IeC {\'\i }k aplikace}{13}{0}{4}
+\beamer@sectionintoc {5}{Co s aplikac\IeC {\'\i }}{14}{0}{5}
+\beamer@sectionintoc {6}{Dal\IeC {\v s}\IeC {\'\i } mo\IeC {\v z}nosti aplikace}{18}{0}{6}
+\beamer@sectionintoc {7}{P\IeC {\v r}\IeC {\'\i }klady aplikac\IeC {\'\i }}{21}{0}{7}
+\beamer@sectionintoc {8}{Konec}{22}{0}{8}

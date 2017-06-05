@@ -1,0 +1,21 @@
+\frametitle{Busy indikátor}
+  \begin{itemize}
+    \item založen na třídě \texttt{style.css}, javascriptové funkci
+    \texttt{busy.js} (obě ve složce \texttt{www}) a GIFu
+    \texttt{free\_busy\_indicator.gif}
+    \item kód v \texttt{ui.R} pak vypadá
+  \end{itemize}
+  \begin{lstlisting}
+    tags$head(
+      tags$link(rel = "stylesheet",
+                type = "text/css",
+                href = "style.css"),
+      tags$script(type = "text/javascript",
+                  src = "busy.js")
+
+    ),
+    div(class = "busy",
+        p("Application is busy..."),
+        img(src = "free_busy_indicator.gif", height = 50, width = 50)
+    )
+  \end{lstlisting}

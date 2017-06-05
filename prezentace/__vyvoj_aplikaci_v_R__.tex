@@ -1,0 +1,595 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% definuji třídu a vlastnosti dokumentu jako celku ---------------------------
+\documentclass[t]{beamer}
+
+
+%% ----------------------------------------------------------------------------
+%% nastavuji titulní stranu a globální parametry ------------------------------
+%% ----------------------------------------------------------------------------
+
+\mode<presentation>{
+
+%% vkládám své vlastní styly, knihovny, některé globální parametry ------------
+\input{my_styles.tex}
+
+}
+
+
+%% nastavuji titulní stranu ---------------------------------------------------
+
+\title[Vývoj aplikací v \textsf{R}]{Vývoj aplikací v \textsf{R}}
+\subtitle{Statistické dýchánky na VŠE}
+\author[Lubomír Štěpánek]{Lubomír Štěpánek}
+\institute[FBMI, 1. LF UK]{%
+  Katedra biomedicínské informatiky \\
+  Fakulta biomedicínského inženýrství \\
+  České vysoké učení technické v Praze \\
+  --- \\
+  Centrum podpory multimediálních forem výuky \\
+  Oddělení výpočetní techniky \\
+  1. lékařská fakulta \\
+  Univerzita Karlova v Praze
+}
+\date{25. května 2017}
+
+
+%% ----------------------------------------------------------------------------
+%% začínám dokument -----------------------------------------------------------
+%% ----------------------------------------------------------------------------
+
+\begin{document}
+
+
+%% titulní strana -------------------------------------------------------------
+
+{
+\setbeamertemplate{headline}{} 
+\begin{frame}
+  \titlepage
+\end{frame}
+}
+
+
+%% ----------------------------------------------------------------------------
+%% sekce "rozjezd" ------------------------------------------------------------
+%% ----------------------------------------------------------------------------
+
+\section{Rozjezd}
+
+%% obsah ----------------------------------------------------------------------
+
+\begin{frame}
+  \frametitle{Obsah}
+  \tableofcontents
+\end{frame}
+
+
+%% motivace -------------------------------------------------------------------
+
+\begin{frame}
+  \frametitle{Motivace}
+  \begin{itemize}
+    \item možnost jednoduše vytvořit vlastní spustitelnou či webovou
+    aplikaci (jen) pomocí jazyka \textsf{R} a balíčku \texttt{Shiny},
+    a to i bez znalostí webařiny
+    \item zároveň možnost aplikaci libovolně vylepšit při znalosti
+    HTML (\underline{H}yper\underline{T}ext \underline{M}arkup
+    \underline{L}anguage), CSS (\underline{C}ascading \underline{S}tyle
+    \underline{S}heets) či \texttt{javascriptu}
+    \item aplikace může s výhodou využít prakticky libovolnou
+    funkcionalitu \textsf{R}
+  \end{itemize}
+\end{frame}
+
+
+%% úvod -----------------------------------------------------------------------
+
+\begin{frame}
+  \frametitle{Úvod}
+  \begin{itemize}
+    \item smyslem je napsat kód v \textsf{R}, který by fungoval
+    i v konzoli, resp. RStudiu, doplnit prvky uživatelského
+    rozhraní, a samostatně spouštět či vystavit online
+    \item základním frameworkem je \textsf{R}-kový balíček \texttt{Shiny}
+  \end{itemize}
+\end{frame}
+
+
+%% minimal working example ----------------------------------------------------
+
+\begin{frame}
+  \frametitle{Minimal Working Example}
+  \begin{itemize}
+    \item aplikace \texttt{hello\_world} a aplikace \texttt{kalkulator}
+    \begin{center}
+      \href{https://github.com/LStepanek/Vyvoj\_aplikaci\_v\_R/}{%
+        \framebox{https://github.com/LStepanek/Vyvoj\_aplikaci\_v\_R/}%
+      }
+    \end{center}
+  \end{itemize}
+\end{frame}
+
+
+%% ----------------------------------------------------------------------------
+%% sekce "první aplikace" -----------------------------------------------------
+%% ----------------------------------------------------------------------------
+
+\section{První aplikace}
+
+%% komponenty typické aplikace ------------------------------------------------
+
+\begin{frame}
+  \frametitle{Komponenty typické aplikace}
+  \begin{itemize}
+    \item obligátní
+    \begin{itemize}
+      \item \texttt{ui.R}
+      \item \texttt{server.R}
+    \end{itemize}
+    \item nadstandardní (nejsou nutné)
+    \begin{itemize}
+      \item \texttt{global.R}
+      \item \texttt{index.html}
+      \item libovolné soubory s příponou \texttt{.R}
+      \item složka \texttt{www}
+      \begin{itemize}
+        \item obrázky, CSS třídy, \texttt{javascriptové} funkce atd.
+      \end{itemize}
+      \item cokoliv dalšího, co \textsf{R}, \texttt{Shiny}
+      a web zná a "snese"
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+%% ui.R -----------------------------------------------------------------------
+
+\begin{frame}
+  \frametitle{\texttt{ui.R}}
+  \begin{itemize}
+    \item \underline{u}ser \underline{i}nterface (uživatelské rozhraní)
+    rozhraní, a samostatně spouštět či vystavit online
+    \item skript s \textsf{R}-kovým kódem určující, které prvky a jak budou
+    uživateli zobrazeny a případně je bude moci měnit (vstupy),
+    eventuálně získat (výstupy)
+  \end{itemize}
+\end{frame}
+
+
+%% typické ui.R ---------------------------------------------------------------
+
+\begin{frame}[fragile]
+  \frametitle{Typické \texttt{ui.R}}
+  \begin{lstlisting}
+    library(shiny)
+    shinyUI(fluidPage(
+      titlePanel("..."),   # název aplikace
+      sidebarLayout(
+    
+        # ovládací prvky aplikace (vstupy; levý panel)
+        sidebarPanel(
+          #\# první ovládací prvek,
+          #\# druhý ovládací prvek,
+          #\# ...
+        ),
+    
+        # výstupy; pravý panel
+        mainPanel(
+          #\# první prvek výstupu,
+          #\# druhý prvek výstupu,
+          #\# ...
+        )
+    
+      )
+    ))
+  \end{lstlisting}
+\end{frame}
+
+
+%% server.R -------------------------------------------------------------------
+
+\begin{frame}
+  \frametitle{\texttt{server.R}}
+  \begin{itemize}
+    \item skript s prakticky ryze \textsf{R}-kovým kódem, který obsahuje
+    a~definuje všechny aplikací používané funkce a procedury
+    \item v podstatě jde o skript, který by měl jít spustit sám o sobě
+    v~RStudiu či \textsf{R}-kové konzoli
+    \item eventualitou (a lepší) je mít procedury a funkce v separátních
+    \texttt{.R} souborech, které bude \texttt{server.R} volat pomocí
+    příkazu \texttt{source()} ("modulárně")
+  \end{itemize}
+\end{frame}
+
+
+%% typický server.R -----------------------------------------------------------
+
+\begin{frame}[fragile]
+  \frametitle{Typický \texttt{server.R}}
+  \begin{lstlisting}
+    library(shiny)
+
+    shinyServer(function(input, output) {
+   
+      # kód první funkce/procedury využívající vstupy "z ui.R"
+      # a generující výstupy "pro ui.R"
+  
+      # kód druhé funkce/procedury využívající vstupy "z ui.R"
+      # a generující výstupy "pro ui.R"
+  
+      # ...
+  
+    })
+  \end{lstlisting}
+\end{frame}
+
+
+%% ----------------------------------------------------------------------------
+%% sekce "gramatika aplikace" -------------------------------------------------
+%% ----------------------------------------------------------------------------
+
+\section{Gramatika aplikace}
+
+%% Gramatika aplikace (ui.R) --------------------------------------------------
+
+\begin{frame}[fragile]
+  \frametitle{Gramatika aplikace (\texttt{ui.R})}
+  \begin{itemize}
+    \item stavebnicový systém
+    \item kód pro úroveň vstupů (obvykle levý panel)
+    \item \texttt{typ\_ovládacího\_prvku(\ldots)}
+  \end{itemize}
+  \begin{lstlisting}
+    typ_ovládacího_prvku(
+      inputId = "id_vstupu",
+      argumenty,
+      ...
+    )
+  \end{lstlisting}
+  \begin{itemize}
+    \item \texttt{typVýstupu(\ldots)}
+  \end{itemize}
+  \begin{lstlisting}
+    typVýstupu(
+      outputId = "id_vystupu"
+    )
+  \end{lstlisting}
+\end{frame}
+
+
+%% Gramatika aplikace (server.R) ----------------------------------------------
+
+\begin{frame}[fragile]
+  \frametitle{Gramatika aplikace (\texttt{server.R})}
+  \begin{itemize}
+    \item taktéž stavebnicový systém
+    \item \texttt{vhodnéRenderováníVýstupu(\{\ldots\})}
+  \end{itemize}
+  \begin{lstlisting}
+    output$id_vystupu <- vhodnéRenderováníVýstupu({
+  
+      # R-ková procedura či funkce beroucí jako vstupy
+      input$id_vstupu
+  
+      # a vracející vhodný výstup
+  
+    })
+  \end{lstlisting}
+\end{frame}
+
+
+%% ----------------------------------------------------------------------------
+%% sekce "slovník aplikace" ---------------------------------------------------
+%% ----------------------------------------------------------------------------
+
+\section{Slovník aplikace}
+
+%% Slovník aplikace -----------------------------------------------------------
+
+\begin{frame}[fragile]
+  \frametitle{Slovník aplikace}
+  \begin{itemize}
+    \item dvojice správných typů výstupu \texttt{server.R} pro vstupy
+    \texttt{ui.R}
+  \end{itemize}
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{ll}
+    \hline
+    \texttt{typVýstupu} & \texttt{vhodnéRenderováníVýstupu} \\
+    \hline
+    \texttt{verbatimTextOutput(\ldots)} & \texttt{renderPrint(\{\ldots\})} \\
+    \texttt{textOutput(\ldots)} & \texttt{renderText(\{\ldots\})} \\
+    \texttt{tableOutput(\ldots)} & \texttt{renderTable(\{\ldots\})} \\
+    \texttt{plotOutput(\ldots)} & \texttt{renderPlot(\{\ldots\})} \\
+    \texttt{uiOutput(\ldots)} & \texttt{renderUI(\{\ldots\})} \\
+    \hline
+  \end{tabular}
+  \end{table}
+  \begin{itemize}
+    \item kompletní seznam prvků použitelných v \texttt{ui.R}
+    a \texttt{server.R} je dostupný zde
+    \texttt{ui.R}
+  \end{itemize}
+  \begin{center}
+    \href{https://shiny.rstudio.com/reference/shiny/latest/}{%
+      \framebox{https://shiny.rstudio.com/reference/shiny/latest/}%
+    }
+  \end{center}
+\end{frame}
+
+
+%% ----------------------------------------------------------------------------
+%% sekce "co s aplikací" ------------------------------------------------------
+%% ----------------------------------------------------------------------------
+
+\section{Co s aplikací}
+
+%% desktopové spuštění --------------------------------------------------------
+
+\begin{frame}
+  \frametitle{Desktopové spuštění aplikace}
+  \begin{itemize}
+    \item lze ji spouštět v RStudiu
+    \begin{itemize}
+      \item zelený trojúhelníček vpravo nahoře ("Run app")
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+%% desktopové spuštění (cont.) ------------------------------------------------
+
+\begin{frame}
+  \frametitle{Desktopové spuštění aplikace (cont.)}
+  \begin{itemize}
+    \item lze ji spustit desktopově bez RStudia
+    \begin{itemize}
+      \item spouštěcí (\textsf{R}-kový) soubor je na
+    \end{itemize}
+  \end{itemize}
+  \begin{center}
+    \href{https://github.com/LStepanek/Vyvoj\_aplikaci\_v\_R/}{%
+      \framebox{https://github.com/LStepanek/Vyvoj\_aplikaci\_v\_R/}%
+    }
+  \end{center}
+  \begin{itemize}
+    \item nutné spárovat příponu \texttt{.myRscript} s programem, který
+    bude aplikaci spouštět, tedy \texttt{spusť\_aplikaci.myRscript}
+    \item před prvním spuštěním se po poklepání na tento soubor otevře
+    dialog pro nastavení výchozího spouštěcího programu; v lokální nabídce
+    přes \textit{Další možnosti} a \textit{Najít jinou aplikaci v tomto
+    počítači} vyberme nástroj \texttt{Rscript} ve složce \textit{bin}
+    složky \textsf{R}
+    \item obvyklá cesta k nástroji vypadá například takto
+  \end{itemize}
+  \begin{center}
+    \framebox{{C:/Program Files/R/R-3.3.0/bin/Rscript}}
+  \end{center}
+\end{frame}
+
+
+%% online spuštění ------------------------------------------------------------
+
+\begin{frame}
+  \frametitle{Online vystavení aplikace}
+  \begin{itemize}
+    \item aplikaci lze vystavit zdarma online na web
+  \end{itemize}
+  \begin{center}
+    \href{https://www.shinyapps.io/}{\framebox{https://www.shinyapps.io/}}
+  \end{center}
+  \begin{itemize}
+    \item nutná registrace, zdarma může běžet maximálně pět aplikací
+    maximálně 25 hodin měsíčně
+    \item link aplikace je obvykle neatraktivní, obsahuje
+    doménu \texttt{shinyapps.io}
+  \end{itemize}
+\end{frame}
+
+
+%% vlastní R-kový server ------------------------------------------------------
+
+\begin{frame}
+  \frametitle{Vlastní \textsf{R}-kový server}
+  \begin{itemize}
+    \item možné nainstalovat na vlastní web pomocí návodu
+  \end{itemize}
+  \begin{center}
+    \href{https://www.rstudio.com/products/rstudio/download-server/}{%
+      \framebox{https://www.rstudio.com/products/rstudio/download-server/}%
+    }
+  \end{center}
+  \begin{itemize}
+    \item je třeba se orientovat v Linuxu
+    \item je vhodné používat běžnou linuxovou distribuci
+    (např. Ubuntu, Fedora, "Debian")
+    \item nutné mít možnost root SSH přístupu k serveru,
+    což běžný provider neumožní
+    \item anebo je možné mít virtuální server na Amazon Web Services,
+    více zde
+  \end{itemize}
+  \begin{center}
+    \href{https://aws.amazon.com/blogs/big-data/running-r-on-aws/}{%
+      \framebox{https://aws.amazon.com/blogs/big-data/running-r-on-aws/}%
+    }
+  \end{center}
+\end{frame}
+
+
+%% ----------------------------------------------------------------------------
+%% sekce "Další možnosti aplikace" --------------------------------------------
+%% ----------------------------------------------------------------------------
+
+\section{Další možnosti aplikace}
+
+
+%% počítadlo ------------------------------------------------------------------
+
+\begin{frame}[fragile]
+  \frametitle{Počítadlo návštěv}
+  \begin{itemize}
+    \item založeno na permanentním souboru \texttt{counter.RData}
+    obsahující dosavadní počet návštěv (jako \texttt{integer})
+    \item kód v \texttt{server.R} pak vypadá
+  \end{itemize}
+  \begin{lstlisting}
+    output$counter <- renderText({
+      if (!file.exists("counter.Rdata")){
+        counter <- 0
+      }else{
+        load(file = "counter.Rdata")
+      }
+    
+      counter <- counter + 1
+  
+      save(counter, file = "counter.Rdata")
+      paste("Hits:", counter, sep = "")
+  
+    })
+  \end{lstlisting}
+\end{frame}
+
+
+%% busy indikátor -------------------------------------------------------------
+
+\begin{frame}[fragile]
+  \frametitle{Busy indikátor}
+  \begin{itemize}
+    \item založen na třídě \texttt{style.css}, javascriptové funkci
+    \texttt{busy.js} (obě ve složce \texttt{www}) a GIFu
+    \texttt{free\_busy\_indicator.gif}
+    \item kód v \texttt{ui.R} pak vypadá
+  \end{itemize}
+  \begin{lstlisting}
+    tags$head(
+      tags$link(rel = "stylesheet",
+                type = "text/css",
+                href = "style.css"),
+      tags$script(type = "text/javascript",
+                  src = "busy.js")
+    
+    ),
+    div(class = "busy",
+        p("Application is busy..."),
+        img(src = "free_busy_indicator.gif", height = 50, width = 50)
+    )
+  \end{lstlisting}
+\end{frame}
+
+
+%% předchozí prvky-------------------------------------------------------------
+
+\begin{frame}
+  \frametitle{Kde získat templáty aditivních funkcionalit}
+  \begin{itemize}
+    \item sledovat přední vývojáře \textsf{R}-kových aplikací
+    (jmenovitě \href{http://deanattali.com/}{Dean Attali})
+    \item sledovat jejich GitHubí účty a streamy z use\textsf{R}! konferencí
+    \item některé dostupné na
+  \end{itemize}
+  \begin{center}
+    \href{https://github.com/LStepanek/Vyvoj\_aplikaci\_v\_R/}{%
+      \framebox{https://github.com/LStepanek/Vyvoj\_aplikaci\_v\_R/}%
+    }
+  \begin{itemize}
+    \item a různě na
+  \end{itemize}
+    \href{https://github.com/LStepanek/}{%
+      \framebox{https://github.com/LStepanek/}%
+    }
+  \end{center}
+\end{frame}
+
+
+%% ----------------------------------------------------------------------------
+%% sekce "příklady aplikací" --------------------------------------------------
+%% ----------------------------------------------------------------------------
+
+\section{Příklady aplikací}
+
+%% nastavuji titulní stranu ---------------------------------------------------
+
+\begin{frame}
+  \frametitle{Příklady existujících aplikací}
+  \begin{itemize}
+    \item aplikace \texttt{statisticke\_natroje}
+  \end{itemize}
+  \begin{center}
+    \href{http://shiny.statest.cz:3838/statisticke\_nastroje/}{%
+      \framebox{http://shiny.statest.cz:3838/statisticke\_nastroje/}%
+    }
+  \end{center}
+  \begin{itemize}
+    \item aplikace \texttt{Conwayova\_hra\_zivota}
+  \end{itemize}
+  \begin{center}
+    \href{http://shiny.statest.cz:3838/Conwayova\_hra\_zivota/}{%
+      \framebox{http://shiny.statest.cz:3838/Conwayova\_hra\_zivota/}%
+    }
+  \end{center}
+  \begin{itemize}
+    \item aplikace \texttt{lightsout} (Dean Atalli)
+  \end{itemize}
+  \begin{center}
+    \href{http://shiny.statest.cz:3838/lightsout/}{%
+      \framebox{http://shiny.statest.cz:3838/lightsout/}%
+    }
+  \end{center}
+  \begin{itemize}
+    \item aplikace \texttt{ShinyItemAnalysis} (Patrícia Martinková et al.)
+  \end{itemize}
+  \begin{center}
+    \href{http://shiny.statest.cz:3838/ShinyItemAnalysis/}{%
+      \framebox{http://shiny.statest.cz:3838/ShinyItemAnalysis/}%
+    }
+  \end{center}
+\end{frame}
+
+
+%% ----------------------------------------------------------------------------
+%% sekce "konec" --------------------------------------------------------------
+%% ----------------------------------------------------------------------------
+
+\section{Konec}
+
+%% poděkování za pozornost ----------------------------------------------------
+
+{
+\setbeamertemplate{headline}{} 
+\begin{frame}
+\frametitle{}
+  \vspace{+2.5cm}
+  \begin{block}{\centering Děkuji za pozornost!}
+    \center
+    \begin{tabular}{l@{}l@{}l}
+      &\href{mailto:lubomir.stepanek@fbmi.cvut.cz}{%
+        lubomir.stepanek@fbmi.cvut.cz%
+      } \\
+      &\href{mailto:lubomir.stepanek@lf1.cuni.cz}{%
+        lubomir.stepanek@lf1.cuni.cz%
+      }
+    \end{tabular}
+  \end{block}
+\end{frame}
+}
+
+
+%% ----------------------------------------------------------------------------
+%% končím dokument ------------------------------------------------------------
+%% ----------------------------------------------------------------------------
+
+\end{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
